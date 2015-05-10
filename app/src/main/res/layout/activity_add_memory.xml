@@ -1,0 +1,204 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="bubblepin.com.bubblepin.addMemoryModule.AddMemoryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/add_media_background">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/add_media_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/choose_media_delete"
+                    android:layout_width="@dimen/circle_image_size"
+                    android:layout_height="@dimen/circle_image_size"
+                    android:layout_centerInParent="true"
+                    android:clickable="true"
+                    android:src="@drawable/add_media_delete"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/choose_media_delete_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/choose_media_delete"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/add_media_delete"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/add_media_text_size"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/choose_media_button"
+                    android:layout_width="@dimen/circle_image_size"
+                    android:layout_height="@dimen/circle_image_size"
+                    android:layout_centerInParent="true"
+                    android:clickable="true"
+                    android:src="@drawable/add_memory" />
+
+                <TextView
+                    android:id="@+id/choose_media_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/choose_media_button"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/add_media"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/add_media_text_size" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/add_memory_title"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:background="#00000000"
+                android:hint="@string/memory_title"
+                android:singleLine="true"
+                android:textSize="@dimen/add_media_text_size" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/grey_line_horizon" />
+
+            <EditText
+                android:id="@+id/add_memory_description"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:ems="10"
+                android:textSize="@dimen/add_media_text_size"
+                android:gravity="top"
+                android:hint="@string/memory_description"
+                android:inputType="textMultiLine" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/grey_line_horizon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/add_date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/add_media_left_margin"
+                    android:background="@drawable/add_media_add_date" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/add_media_left_margin"
+                    android:text="@string/add_date"
+                    android:textSize="@dimen/add_media_text_size" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/grey_line_vertical" />
+
+
+            <LinearLayout
+                android:id="@+id/add_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/add_media_left_margin"
+                    android:background="@drawable/add_media_privacy" />
+
+                <TextView
+                    android:id="@+id/privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/add_media_left_margin"
+                    android:text="@string/user_privacy"
+                    android:textSize="@dimen/add_media_text_size" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/add_media_grey_submit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/submit_button_height"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/add_media_submit_grey_button"/>
+
+    <ImageView
+        android:id="@+id/add_media_submit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/submit_button_height"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/add_media_submit_button"
+        android:visibility="gone"
+        android:clickable="true" />
+</RelativeLayout>
+

@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="bubblepin.com.bubblepin.MemoryDetailActivity">
+
+    <item
+        android:id="@+id/menu_memory_detail_delete"
+        android:title="@string/memory_detail_delete"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
+</menu>

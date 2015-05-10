@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="bubblepin.com.bubblepin" >
+
+    <permission
+        android:name="bubblepin.com.bubblepin.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="bubblepin.com.bubblepin.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- com.google.android.maps.v2.API_KEY -->
+    <!-- Debug: AIzaSyBgU5fCyu8dAtjFaGhghx1bZuhjbKzLp-k -->
+    <!-- Release: AIzaSyDcGN8yoMMR2oiSOB6Rawo2cmQ21JfBeBc -->
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBgU5fCyu8dAtjFaGhghx1bZuhjbKzLp-k" />
+
+        <activity
+            android:name=".WelcomeActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InitialActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".loginModule.LoginActivity"
+            android:label="@string/loginTitle"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".loginModule.SignUpActivity"
+            android:label="@string/title_activity_signup_acitivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".metaioSDKLocationModule.MetaioSDKLocationBasedARModule"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:label="@string/title_activity_metaio_sdklocation_base_armodule" />
+        <activity
+            android:name=".GoogleMapActivity"
+            android:label="@string/title_activity_main_google_map"
+            android:largeHeap="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".filterModule.FilterActivity"
+            android:label="@string/filter_title"/>
+        <activity
+            android:name=".addMemoryModule.AddMemoryActivity"
+            android:label="@string/title_activity_add_memory"
+            android:largeHeap="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".addMemoryModule.ChooseMediaActivity"
+            android:label="@string/title_activity_choose_media"
+            android:largeHeap="true" />
+        <activity
+            android:name=".MemoryDetailActivity"
+            android:label="@string/memory"
+            android:screenOrientation="portrait"
+            android:theme="@style/Memory_Theme" />
+        <activity
+            android:name=".contactModule.ContactActivity"
+            android:label="@string/contact"
+            android:theme="@style/Contact_Theme" />
+        <activity
+            android:name=".contactModule.AddContactActivity"
+            android:label="@string/add_contact"
+            android:theme="@style/Contact_Theme" />
+        <activity
+            android:name=".profileModule.ProfileActivity"
+            android:label="@string/profile"
+            android:theme="@style/Profile_Theme"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".profileModule.ProfileEditActivity"
+            android:label="@string/profile_edit"
+            android:theme="@style/Profile_Theme" />
+        <activity
+            android:name=".filterModule.FilterDetailActivity"
+            android:label="@string/title_activity_filter_detail" >
+        </activity>
+    </application>
+
+</manifest>

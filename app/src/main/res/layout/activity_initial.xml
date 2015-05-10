@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/logo"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_description"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="160dp"
+        android:textColor="@color/white"
+        android:id="@+id/textView_mainAcitivity" />
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:id="@+id/loginButton_mainAcitivity"
+        android:background="@drawable/login_button"
+        android:layout_marginTop="40dp"
+        android:layout_alignTop="@+id/textView_mainAcitivity"
+        android:layout_centerHorizontal="true"
+        android:clickable="true" />
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:id="@+id/takeTourButton_mainAcitivity"
+        android:background="@drawable/main_sign_up"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/loginButton_mainAcitivity"
+        android:layout_alignLeft="@+id/loginButton_mainAcitivity"
+        android:layout_alignStart="@+id/loginButton_mainAcitivity"
+        android:clickable="true" />
+
+</RelativeLayout>

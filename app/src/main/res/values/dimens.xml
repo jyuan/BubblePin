@@ -1,0 +1,26 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--circle image size-->
+    <dimen name="circle_image_size">70dp</dimen>
+
+    <!--submit button height-->
+    <dimen name="submit_button_height">60dp</dimen>
+
+    <!--text Size -->
+    <dimen name="add_media_text_size">14sp</dimen>
+    <dimen name="add_media_left_margin">16dp</dimen>
+
+    <!-- memory detail -->
+    <dimen name="memory_detail_title">18sp</dimen>
+    <dimen name="memory_detail_name">16sp</dimen>
+    <dimen name="memory_detail_margin">16dp</dimen>
+    <dimen name="memory_detail_small_margin">8dp</dimen>
+    <dimen name="memory_detail_image_size">24dp</dimen>
+
+    <!-- contract module -->
+    <dimen name="contract_title">18sp</dimen>
+
+</resources>

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="bubblepin.com.bubblepin.contactModule.ContactActivity">
+
+    <item
+        android:id="@+id/menu_contact_search"
+        android:title="@string/add_contact_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView" />
+
+    <item
+        android:id="@+id/menu_contact_add"
+        android:icon="@android:drawable/ic_menu_add"
+        app:showAsAction="always"
+        android:title="@string/add_contact_add"/>
+</menu>

@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/choose_media_background"
+    tools:context="bubblepin.com.bubblepin.addMemoryModule.ChooseMediaActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:text="@string/choose_media_title"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/choose_media_cancel"
+        android:layout_width="@dimen/circle_image_size"
+        android:layout_height="@dimen/circle_image_size"
+        android:layout_centerInParent="true"
+        android:background="@drawable/choose_media_cancel"
+        android:clickable="true" />
+
+    <ImageView
+        android:id="@+id/choose_media_picture"
+        android:layout_width="@dimen/circle_image_size"
+        android:layout_height="@dimen/circle_image_size"
+        android:layout_above="@+id/choose_media_cancel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/choose_media_picture"
+        android:clickable="true" />
+
+    <ImageView
+        android:id="@+id/choose_media_music"
+        android:layout_width="@dimen/circle_image_size"
+        android:layout_height="@dimen/circle_image_size"
+        android:layout_below="@+id/choose_media_cancel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/choose_media_music"
+        android:clickable="true" />
+
+    <TextView
+        android:id="@+id/choose_media_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="65dp"
+        android:layout_toLeftOf="@+id/choose_media_cancel" />
+
+    <ImageView
+        android:id="@+id/choose_media_vedio"
+        android:layout_width="@dimen/circle_image_size"
+        android:layout_height="@dimen/circle_image_size"
+        android:layout_above="@+id/choose_media_left"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="13dp"
+        android:layout_toLeftOf="@+id/choose_media_cancel"
+        android:background="@drawable/choose_media_vedio"
+        android:clickable="true" />
+
+    <ImageView
+        android:id="@+id/choose_media_recording"
+        android:layout_width="@dimen/circle_image_size"
+        android:layout_height="@dimen/circle_image_size"
+        android:layout_below="@+id/choose_media_left"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="13dp"
+        android:layout_marginRight="25dp"
+        android:layout_toLeftOf="@+id/choose_media_cancel"
+        android:background="@drawable/choose_media_recording"
+        android:clickable="true" />
+
+    <TextView
+        android:id="@+id/choose_media_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="65dp"
+        android:layout_toRightOf="@+id/choose_media_cancel" />
+
+    <ImageView
+        android:id="@+id/choose_media_camera"
+        android:layout_width="@dimen/circle_image_size"
+        android:layout_height="@dimen/circle_image_size"
+        android:layout_above="@+id/choose_media_right"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="13dp"
+        android:layout_toRightOf="@+id/choose_media_cancel"
+        android:background="@drawable/choose_media_camera"
+        android:clickable="true" />
+
+    <ImageView
+        android:id="@+id/choose_media_recommend"
+        android:layout_width="@dimen/circle_image_size"
+        android:layout_height="@dimen/circle_image_size"
+        android:layout_below="@+id/choose_media_right"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="13dp"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/choose_media_cancel"
+        android:background="@drawable/choose_media_recommend"
+        android:clickable="true" />
+
+</RelativeLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <bubblepin.com.bubblepin.util.RoundImageView
+        android:id="@+id/contact_user_photo"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/user_photo_intial"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="48dp"
+        android:layout_centerVertical="true"
+        android:layout_height="48dp" />
+
+    <TextView
+        android:id="@+id/contact_userId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/contact_user_photo">
+
+        <TextView
+            android:id="@+id/contact_username"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:text="@string/add_contact_username" />
+
+        <TextView
+            android:id="@+id/contact_city"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:text="@string/add_contact_city" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
