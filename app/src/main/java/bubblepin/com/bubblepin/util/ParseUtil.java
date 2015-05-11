@@ -80,7 +80,9 @@ public class ParseUtil {
      * @return ParseGeoPoint Object
      */
     public static ParseGeoPoint getParseGeoPoint(Location location) {
-        if (location == null) return null;
+        if (null == location) {
+            return null;
+        }
         return new ParseGeoPoint(location.getLatitude(), location.getLongitude());
     }
 
@@ -497,6 +499,25 @@ public class ParseUtil {
                 }
             }
         });
+    }
+
+    /**
+     * check whether the email exist in the server
+     *
+     * @param email user input
+     * @return whether the email exist or not
+     * @throws ParseException
+     */
+    public static boolean isEmailExistInServer(String email) throws ParseException {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo(email, USER_EMAIL);
+        ParseUser parseUser = null;
+        try {
+            parseUser = query.getFirst();
+        } catch (ParseException e) {
+            Log.e(TAG, "check unique failed: " + e.getMessage());
+        }
+        return null == parseUser;
     }
 
     /**

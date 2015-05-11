@@ -5,8 +5,8 @@
     <!--<string name="test_email">test@bubblepin.com</string>-->
     <!--<string name="test_password">yuanjie</string>-->
 
-    <string name="test_email">jie.yuan@nyu.educ</string>
-    <string name="test_password">yuanjie</string>
+    <string name="test_email">bubblepin.dev@gmail.com</string>
+    <string name="test_password">yuanjie2015</string>
 
     <!-- Activity -->
     <string name="title_activity_signup_acitivity">Sign Up</string>
@@ -30,6 +30,9 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="have_no_account">Don\'t have an account yet?</string>
     <string name="logout">LogOut</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="enter_email_address">Enter Your Email Address</string>
+    <string name="email_not_exist">Error: mail not exist in server</string>
 
     <!-- Error handle -->
     <string name="error_invalid_name">This name is too short</string>
@@ -170,9 +173,12 @@
     <string name="ok">OK</string>
     <string name="download">Downloading </string>
     <string name="uploading">Uploading </string>
+    <string name="success">Success</string>
+    <string name="send_email_success_message">Send Email Success! Please check your email</string>
 
     <!-- Toast -->
     <string name="friend_exist_in_category">user exists in this category</string>
     <string name="get_image_success">Get Image Success!</string>
+    <string name="title_activity_forget_password">Forget Password</string>
 
 </resources>

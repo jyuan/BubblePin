@@ -461,7 +461,7 @@ public class GoogleMapActivity extends Activity implements
     /**
      * Shows the progress UI and hides the login form.
      */
-    public void showProgress(final boolean show) {
+    public void showProgress(boolean show) {
         progressBarLayout.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 

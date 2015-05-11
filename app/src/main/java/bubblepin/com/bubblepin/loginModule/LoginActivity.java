@@ -18,11 +18,11 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -41,7 +41,7 @@ import bubblepin.com.bubblepin.util.ValidateUtil;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, View.OnClickListener {
 
     private AutoCompleteTextView emailText;
     private EditText passwordText;
@@ -60,23 +60,29 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         passwordText = (EditText) findViewById(R.id.password_loginActivity);
 
-        ImageView loginButton = (ImageView) findViewById(R.id.loginButton_loginActivity);
-        ImageView signUpButton = (ImageView) findViewById(R.id.signUpButton_loginActivity);
+        ImageView loginButton = (ImageView) findViewById(R.id.login_button);
+        ImageView signUpButton = (ImageView) findViewById(R.id.signup_button);
+        TextView forgetPassword = (TextView) findViewById(R.id.forget_password);
 
-        loginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        signUpButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-            }
-        });
+        loginButton.setOnClickListener(this);
+        signUpButton.setOnClickListener(this);
+        forgetPassword.setOnClickListener(this);
         progressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.login_button:
+                attemptLogin();
+                break;
+            case R.id.signup_button:
+                startActivity(new Intent(this, SignUpActivity.class));
+                break;
+            case R.id.forget_password:
+                startActivity(new Intent(this, ForgetPasswordActivity.class));
+                break;
+        }
     }
 
     private void populateAutoComplete() {
@@ -213,8 +219,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                         " = ?", new String[]{ContactsContract.CommonDataKinds.Email
                 .CONTENT_ITEM_TYPE},
 
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
@@ -239,13 +243,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
                 ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
         };
-
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);

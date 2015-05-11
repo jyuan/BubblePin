@@ -74,7 +74,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".filterModule.FilterActivity"
-            android:label="@string/filter_title"/>
+            android:label="@string/filter_title" />
         <activity
             android:name=".addMemoryModule.AddMemoryActivity"
             android:label="@string/title_activity_add_memory"
@@ -100,8 +100,8 @@
         <activity
             android:name=".profileModule.ProfileActivity"
             android:label="@string/profile"
-            android:theme="@style/Profile_Theme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Profile_Theme" />
         <activity
             android:name=".profileModule.ProfileEditActivity"
             android:label="@string/profile_edit"
@@ -109,6 +109,10 @@
         <activity
             android:name=".filterModule.FilterDetailActivity"
             android:label="@string/title_activity_filter_detail" >
+        </activity>
+        <activity
+            android:name=".loginModule.ForgetPasswordActivity"
+            android:label="@string/title_activity_forget_password" >
         </activity>
     </application>
 

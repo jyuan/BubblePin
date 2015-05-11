@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -20,17 +18,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.Cluster;
@@ -54,28 +51,22 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import bubblepin.com.bubblepin.MemoryDetailActivity;
 import bubblepin.com.bubblepin.MyApplication;
 import bubblepin.com.bubblepin.R;
-import bubblepin.com.bubblepin.addMemoryModule.AddMemoryActivity;
-import bubblepin.com.bubblepin.contactModule.ContactActivity;
-import bubblepin.com.bubblepin.filterModule.FilterActivity;
 import bubblepin.com.bubblepin.googleMapCluster.BubblePinClusterItem;
-import bubblepin.com.bubblepin.loginModule.SignUpActivity;
-import bubblepin.com.bubblepin.metaioSDKLocationModule.MetaioSDKLocationBasedARModule;
 import bubblepin.com.bubblepin.util.ImageUtil;
-import bubblepin.com.bubblepin.util.LocationUpdateUtil;
 import bubblepin.com.bubblepin.util.ParseUtil;
 import bubblepin.com.bubblepin.util.PreferenceUtil;
 import bubblepin.com.bubblepin.util.RoundImageView;
 
 
-public class ProfileActivity extends ActionBarActivity implements
+public class ProfileActivity extends ActionBarActivity implements OnMapReadyCallback,
         View.OnClickListener, ClusterManager.OnClusterItemClickListener,
+        ClusterManager.OnClusterClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String MEMORY_ID = "memoryID";
@@ -85,20 +76,20 @@ public class ProfileActivity extends ActionBarActivity implements
     private static final int UPLOAD_IMAGE = 2;
     private static boolean refresh = false;
 
-    private ImageView addContactButton;
     private RoundImageView userPhoto;
     private ImageUtil imageUtil;
     private TextView totalMemoriesTextView, recentAddedTextView, contactNumberTextView,
             usernameTextView, locationTextView;
 
     private ProgressDialog progressDialog;
-    private LinearLayout progressBarLayout;
+    private LinearLayout progressBar;
 
     // Provides the entry point to Google Play services.
     private GoogleApiClient googleApiClient;
 
     private GoogleMap googleMap;
-    private ParseGeoPoint parseGeoPoint;
+    private double latitude;
+    private double longitude;
 
     // private final Map<Marker, String> markers = new HashMap<>();
     private final Map<BubblePinClusterItem, String> clusterItems = new HashMap<>();
@@ -128,6 +119,7 @@ public class ProfileActivity extends ActionBarActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         buildGoogleApiClient();
+
         findViewById();
 
         try {
@@ -136,6 +128,18 @@ public class ProfileActivity extends ActionBarActivity implements
             Log.e(getClass().getSimpleName(), "get user Info error: " + e.getMessage());
         }
         getSummaryDataFromParse(userID);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        googleApiClient.disconnect();
     }
 
     @Override
@@ -152,21 +156,13 @@ public class ProfileActivity extends ActionBarActivity implements
         }
     }
 
-    protected synchronized void buildGoogleApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-
     private void findViewById() {
         locationTextView = (TextView) findViewById(R.id.profile_location);
         totalMemoriesTextView = (TextView) findViewById(R.id.profile_total_memory);
         recentAddedTextView = (TextView) findViewById(R.id.profile_recent_added);
         contactNumberTextView = (TextView) findViewById(R.id.profile_contact);
         usernameTextView = (TextView) findViewById(R.id.profile_username);
-        addContactButton = (ImageView) findViewById(R.id.profile_add_contact);
+        progressBar = (LinearLayout) findViewById(R.id.progressBar_layout);
 
         // only the profile is current login user, the user can change the user photo
         userPhoto = (RoundImageView) findViewById(R.id.profile_user_photo);
@@ -174,13 +170,7 @@ public class ProfileActivity extends ActionBarActivity implements
             userPhoto.setOnClickListener(this);
         } else {
             userPhoto.setClickable(false);
-            addContactButton.setVisibility(View.VISIBLE);
-            addContactButton.setOnClickListener(this);
         }
-    }
-
-    private void addContact() {
-
     }
 
     @Override
@@ -243,9 +233,6 @@ public class ProfileActivity extends ActionBarActivity implements
         switch (v.getId()) {
             case R.id.profile_user_photo:
                 chooseSource();
-                break;
-            case R.id.profile_add_contact:
-                addContact();
                 break;
         }
     }
@@ -454,28 +441,18 @@ public class ProfileActivity extends ActionBarActivity implements
      * initialize google map engine and mark all memories as markers
      */
     private void createMap() {
-        googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        googleMap.setMyLocationEnabled(true);
-
-        clusterManager = new ClusterManager<>(this, googleMap);
-        clusterManager.setOnClusterItemClickListener(this);
-
-        googleMap.setOnCameraChangeListener(clusterManager);
-        googleMap.setOnMarkerClickListener(clusterManager);
-        UiSettings uiSettings = googleMap.getUiSettings();
-        uiSettings.setZoomControlsEnabled(true);
-        uiSettings.setCompassEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(parseGeoPoint.getLatitude(),
-                        parseGeoPoint.getLongitude()), 15));
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.profile_map);
+        mapFragment.getMapAsync(this);
+        googleMap = mapFragment.getMap();
     }
 
     /**
      * Method used to initialize all markers
      */
     private void initMarks() {
-        clusterItems.clear();
-        clusterManager.clearItems();
+//        clusterItems.clear();
+//        clusterManager.clearItems();
 
         // get all memories from current user
         if (ParseUtil.isCurrentLoginUser(userID)) {
@@ -495,7 +472,15 @@ public class ProfileActivity extends ActionBarActivity implements
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                addMemoryIntoCluster(list);
+                if (null == e) {
+                    Log.i(getClass().getSimpleName(), "size of the list: " + list.size());
+                    if (list.size() != 0) {
+                        addMemoryIntoCluster(list);
+                    }
+                } else {
+                    Log.e(getClass().getSimpleName(),
+                            "get memories from user error: " + e.getMessage());
+                }
             }
         });
     }
@@ -510,7 +495,15 @@ public class ProfileActivity extends ActionBarActivity implements
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                addMemoryIntoCluster(list);
+                if (null == e) {
+                    Log.i(getClass().getSimpleName(), "size of the list: " + list.size());
+                    if (list.size() != 0) {
+                        addMemoryIntoCluster(list);
+                    }
+                } else {
+                    Log.e(getClass().getSimpleName(),
+                            "get memories from user error: " + e.getMessage());
+                }
             }
         });
     }
@@ -542,6 +535,12 @@ public class ProfileActivity extends ActionBarActivity implements
         return true;
     }
 
+    @Override
+    public boolean onClusterClick(Cluster cluster) {
+        showToast("Zoom out to get each Memory");
+        return true;
+    }
+
     private void getMemoryBriefInfo(final String objectId) {
         showProgress(true);
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseUtil.MEMORY);
@@ -560,15 +559,16 @@ public class ProfileActivity extends ActionBarActivity implements
                     queryUser.get(userId);
                 } catch (ParseException e1) {
                     e1.printStackTrace();
+                    showProgress(false);
                 }
                 queryUser.getFirstInBackground(new GetCallback<ParseUser>() {
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
                         if (null == e) {
+                            showProgress(false);
                             String username = parseUser.getString(ParseUtil.USER_NICKNAME);
                             String message = "Author: " + username + "\nMedia Type: " +
                                     mediaType + "\nMemory Date: " + date;
-                            showProgress(false);
                             createNewDialog(objectId, title, message, userId);
                         }
                     }
@@ -611,11 +611,12 @@ public class ProfileActivity extends ActionBarActivity implements
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    public void showProgress(final boolean show) {
-        progressBarLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     @Override
@@ -624,9 +625,9 @@ public class ProfileActivity extends ActionBarActivity implements
                 googleApiClient);
         if (location != null) {
             Log.i(getClass().getSimpleName(), "get current location");
-            parseGeoPoint = ParseUtil.getParseGeoPoint(location);
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
             createMap();
-            initMarks();
         } else {
             Log.i(getClass().getSimpleName(), "doesn't get current location");
         }
@@ -642,5 +643,28 @@ public class ProfileActivity extends ActionBarActivity implements
         Log.e(getClass().getSimpleName(),
                 "Connection failed: ConnectionResult.getErrorCode() = "
                         + connectionResult.getErrorCode());
+    }
+
+
+    private void showProgress(boolean flag) {
+        progressBar.setVisibility(flag ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.setMyLocationEnabled(true);
+
+        googleMap.setOnCameraChangeListener(clusterManager);
+        googleMap.setOnMarkerClickListener(clusterManager);
+        UiSettings uiSettings = googleMap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setCompassEnabled(true);
+        Log.i(getClass().getSimpleName(), "latitude: " + String.valueOf(latitude));
+        Log.i(getClass().getSimpleName(), "longitude: " + String.valueOf(longitude));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(latitude, longitude), 15));
+        clusterManager = new ClusterManager<>(this, googleMap);
+        clusterManager.setOnClusterItemClickListener(this);
+        initMarks();
     }
 }

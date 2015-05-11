@@ -29,22 +29,22 @@ public class WelcomeActivity extends Activity {
         // initial page according to SharePreference
         boolean isLogin = PreferenceUtil.getBoolean(this, PreferenceUtil.LOGIN_INFO);
         Log.i(getClass().getSimpleName(), "does the user login? " + isLogin);
-        if (isLogin && ParseUser.getCurrentUser() != null) {
-            startActivity(new Intent(this, GoogleMapActivity.class));
-            finish();
-        } else {
-            // does the first time to initial this application
-            boolean isShow = PreferenceUtil.getBoolean(this, PreferenceUtil.GUIDE_PAGE);
-            Log.i(getClass().getSimpleName(), "the first time to initial this application? " + isShow);
-            if (isShow) {
-                startActivity(new Intent(this, InitialActivity.class));
-                finish();
-            } else {
-                initGuideViewPage();
-            }
-        }
+//        if (isLogin && ParseUser.getCurrentUser() != null) {
+//            startActivity(new Intent(this, GoogleMapActivity.class));
+//            finish();
+//        } else {
+//            // does the first time to initial this application
+//            boolean isShow = PreferenceUtil.getBoolean(this, PreferenceUtil.GUIDE_PAGE);
+//            Log.i(getClass().getSimpleName(), "the first time to initial this application? " + isShow);
+//            if (isShow) {
+//                startActivity(new Intent(this, InitialActivity.class));
+//                finish();
+//            } else {
+//                initGuideViewPage();
+//            }
+//        }
         // test
-//        initGuideViewPage();
+        initGuideViewPage();
     }
 
     private void initGuideViewPage() {
