@@ -95,6 +95,7 @@ public class GoogleMapActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        MyApplication.getInstance().finishActivity();
         MyApplication.getInstance().addActivity(this);
 
         // check whether it is from SignUp Activity

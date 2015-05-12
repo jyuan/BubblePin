@@ -106,7 +106,7 @@
     <string name="add_contact_add">Add</string>
     <string name="contact_number">Total 10 Friends</string>
     <string name="loading_friends_list">Loading Friends List&#8230;</string>
-    <string name="contact_no_friends">What a pity, You have no Friends now! Click the ADD button on the right of the sidebar</string>
+    <string name="contact_no_friends">What a pity, You have no Friends now! Click the ADD button on the right of the Actionbar</string>
 
     <!-- Profile -->
     <string name="profile">Profile</string>

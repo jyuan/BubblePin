@@ -41,6 +41,12 @@ public class MyApplication extends Application {
         System.exit(0);
     }
 
+    public void finishActivity() {
+        for (Activity activity : activityList) {
+            activity.finish();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -21,6 +21,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +62,7 @@ public class AddContactActivity extends ActionBarActivity
         listView = (ListView) findViewById(R.id.add_contract_list);
 
         isInitial = true;
-        getUserDataFromParse();
+        getAllSignUpUser();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,7 +79,7 @@ public class AddContactActivity extends ActionBarActivity
 
     @Override
     public void onRefresh() {
-        getUserDataFromParse();
+        getAllSignUpUser();
     }
 
     /**
@@ -87,14 +89,13 @@ public class AddContactActivity extends ActionBarActivity
         progressLayout.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    private void getUserDataFromParse() {
+    private void getAllSignUpUser() {
         if (isInitial) {
             showProgress(true);
         }
         list.clear();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNotEqualTo(ParseUtil.OBJECT_ID, currentID);
-        query.orderByAscending(ParseUtil.USER_NICKNAME);
 
         final int[] flag = new int[1];
 
@@ -146,6 +147,13 @@ public class AddContactActivity extends ActionBarActivity
                 list.add(map);
                 flag[0]++;
                 if (flag[0] == size) {
+                    Collections.sort(list, new Comparator<Map<String, Object>>() {
+                        @Override
+                        public int compare(Map<String, Object> map1, Map<String, Object> map2) {
+                            return String.valueOf(map1.get(ParseUtil.USER_NICKNAME)).
+                                    compareToIgnoreCase(String.valueOf(map2.get(ParseUtil.USER_NICKNAME)));
+                        }
+                    });
                     AddContactAdapter adapter = new AddContactAdapter(AddContactActivity.this, list);
                     listView.setAdapter(adapter);
                     if (isInitial) {

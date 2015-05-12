@@ -24,6 +24,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,6 +180,14 @@ public class ContactActivity extends ActionBarActivity
 
                     if (countFriend == contactNumber) {
                         Log.i(getClass().getSimpleName(), "get all the friends data");
+                        Collections.sort(list, new Comparator<Map<String, Object>>() {
+                            @Override
+                            public int compare(Map<String, Object> map1, Map<String, Object> map2) {
+                                return String.valueOf(map1.get(ParseUtil.USER_NICKNAME)).
+                                        compareToIgnoreCase(String.valueOf(map2.get(ParseUtil.USER_NICKNAME)));
+                            }
+                        });
+
                         if (isInitial) {
                             showProgress(false);
                             isInitial = false;

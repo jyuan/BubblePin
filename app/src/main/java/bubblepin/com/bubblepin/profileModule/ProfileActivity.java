@@ -119,6 +119,7 @@ public class ProfileActivity extends ActionBarActivity implements OnMapReadyCall
         Intent intent = getIntent();
         userID = intent.getStringExtra(USER_ID);
 
+
         imageUtil = new ImageUtil(this);
 
         progressDialog = new ProgressDialog(this);
@@ -189,11 +190,16 @@ public class ProfileActivity extends ActionBarActivity implements OnMapReadyCall
     }
 
     private void getUserDataFromParse(String userID) throws ParseException {
-        ParseUser parseUser = ParseUtil.getUserInfo(userID);
+        ParseUser parseUser;
+        if (ParseUtil.isCurrentLoginUser(userID)) {
+            parseUser = ParseUser.getCurrentUser();
+        } else {
+            parseUser = ParseUtil.getUserInfo(userID);
+        }
         locationTextView.setText(ParseUtil.getUserLocation(parseUser));
         if (!refresh) {
-            usernameTextView.setText((String) parseUser.get(ParseUtil.USER_NICKNAME));
-            ParseFile parseFile = (ParseFile) parseUser.get(ParseUtil.USER_PHOTO);
+            usernameTextView.setText(parseUser.getString(ParseUtil.USER_NICKNAME));
+            ParseFile parseFile = parseUser.getParseFile(ParseUtil.USER_PHOTO);
             if (parseFile != null) {
                 getUserPhotoFromParse(parseFile);
             }
