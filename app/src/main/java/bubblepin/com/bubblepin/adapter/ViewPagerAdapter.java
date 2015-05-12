@@ -13,6 +13,9 @@ import bubblepin.com.bubblepin.InitialActivity;
 import bubblepin.com.bubblepin.R;
 import bubblepin.com.bubblepin.util.PreferenceUtil;
 
+/**
+ * Get Reference from online and then subsequently modify the code according to requirement
+ */
 public class ViewPagerAdapter extends PagerAdapter {
 
     private List<View> viewList;

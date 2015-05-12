@@ -39,7 +39,6 @@ import bubblepin.com.bubblepin.R;
 import bubblepin.com.bubblepin.util.ImageUtil;
 import bubblepin.com.bubblepin.util.ParseUtil;
 
-
 public class AddMemoryActivity extends Activity implements View.OnClickListener {
 
     public static final int MEDIA = 1;
@@ -60,13 +59,14 @@ public class AddMemoryActivity extends Activity implements View.OnClickListener 
 
     private ProgressDialog progressDialog;
 
+    private ImageUtil imageUtil;
+
     // date
     private int mYear;
     private int month;
     private int day;
     // privacy
     private String[] privacy;
-
     private int privacySelect = 0;
 
     // submit info
@@ -78,9 +78,8 @@ public class AddMemoryActivity extends Activity implements View.OnClickListener 
     private String title = "";
     private String description = "";
 
-    private ImageUtil imageUtil;
-    private ParseGeoPoint parseGeoPoint;
     private String address;
+    private ParseGeoPoint parseGeoPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,17 +178,6 @@ public class AddMemoryActivity extends Activity implements View.OnClickListener 
         }
     }
 
-    /**
-     * get the current date and show into the date TextView
-     */
-    private void initialCurrentDate() {
-        final Calendar cal = Calendar.getInstance();
-        mYear = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH);
-        day = cal.get(Calendar.DAY_OF_MONTH);
-        updateDisplay();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -220,6 +208,7 @@ public class AddMemoryActivity extends Activity implements View.OnClickListener 
 
                 changeMediaUI(true);
 
+                // compress the image
                 Bitmap bitmap;
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inSampleSize = 2;
@@ -257,6 +246,17 @@ public class AddMemoryActivity extends Activity implements View.OnClickListener 
             imagePath = null;
             imageType = ParseUtil.TEXT;
         }
+    }
+
+    /**
+     * get the current date and show into the date TextView
+     */
+    private void initialCurrentDate() {
+        final Calendar cal = Calendar.getInstance();
+        mYear = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH);
+        updateDisplay();
     }
 
     /**
@@ -412,10 +412,10 @@ public class AddMemoryActivity extends Activity implements View.OnClickListener 
         // set dialog message
         alertDialogBuilder
                 .setMessage(message)
-                .setPositiveButton(getString(R.string.upload), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (success) {
-                            GoogleMapActivity.refreshUpdateMarkers();
+                            updateMap();
                             setResult(RESULT_OK);
                             finish();
                         }
@@ -441,4 +441,7 @@ public class AddMemoryActivity extends Activity implements View.OnClickListener 
         Toast.makeText(this, info, Toast.LENGTH_LONG).show();
     }
 
+    private void updateMap() {
+        GoogleMapActivity.refreshUpdateMarkers();
+    }
 }

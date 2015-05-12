@@ -3,9 +3,8 @@ package bubblepin.com.bubblepin.loginModule;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,14 +17,13 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 
-import bubblepin.com.bubblepin.MemoryDetailActivity;
 import bubblepin.com.bubblepin.R;
-import bubblepin.com.bubblepin.profileModule.ProfileEditActivity;
 import bubblepin.com.bubblepin.util.ParseUtil;
 
 public class ForgetPasswordActivity extends ActionBarActivity {
 
     private AutoCompleteTextView emailTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +43,11 @@ public class ForgetPasswordActivity extends ActionBarActivity {
         });
     }
 
+    /**
+     * Parse doucment: https://parse.com/docs/android/guide#users-resetting-passwords
+     *
+     * @param email user input
+     */
     private void sendEmail(String email) {
         try {
             boolean isEmailExist = ParseUtil.isEmailExistInServer(email);
@@ -54,7 +57,7 @@ public class ForgetPasswordActivity extends ActionBarActivity {
                         if (e == null) {
                             sendEmailSuccessDialog();
                         } else {
-                            String error = "send Email Error: " + e.getMessage();
+                            String error = getString(R.string.send_email_error) + e.getMessage();
                             Log.e(getClass().getSimpleName(), error);
                             showToast(error);
                         }

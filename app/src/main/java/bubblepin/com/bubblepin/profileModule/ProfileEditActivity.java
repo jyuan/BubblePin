@@ -41,7 +41,7 @@ public class ProfileEditActivity extends ActionBarActivity {
                     String country = countryEdit.getText().toString().trim();
                     Log.i(getClass().getSimpleName(), "city: " + city + ", country: " + country);
                     ParseUtil.saveUserInfo(city, country);
-                    ProfileActivity.refreshUserInfo();
+                    updateProfile();
                     finish();
                 } catch (ParseException e) {
                     Log.e(getClass().getSimpleName(),
@@ -58,6 +58,10 @@ public class ProfileEditActivity extends ActionBarActivity {
 
         cityEdit.setText(city);
         countryEdit.setText(country);
+    }
+
+    private void updateProfile() {
+        ProfileActivity.refreshUserInfo();
     }
 
     @Override

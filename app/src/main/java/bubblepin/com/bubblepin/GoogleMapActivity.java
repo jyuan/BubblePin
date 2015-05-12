@@ -68,7 +68,7 @@ public class GoogleMapActivity extends Activity implements
     private static boolean updateMarkers = true;
     // markers update status (only assigned within onResume method)
     private boolean isUpdateMarkers = true;
-
+    // whether it's the first to initial activity
     private boolean isFirstInitial = true;
 
     private GoogleMap googleMap;
@@ -104,6 +104,7 @@ public class GoogleMapActivity extends Activity implements
 
         locationUpdateUtil = new LocationUpdateUtil(this);
         locationUpdateUtil.buildGoogleApiClient();
+        // set handler as timer
         handler.postDelayed(scanLocation, 0);
 
         if (isValidGooglePlayService()) {
@@ -300,6 +301,25 @@ public class GoogleMapActivity extends Activity implements
         googleMap.moveCamera(CameraUpdateFactory.zoomOut());
     }
 
+    @Override
+    public boolean onClusterItemClick(ClusterItem clusterItem) {
+        String objectId = clusterItems.get(clusterItem);
+        if (null == objectId) {
+            return false;
+        }
+        getMemoryBriefInfo(objectId);
+        return true;
+    }
+
+    @Override
+    public boolean onClusterClick(Cluster cluster) {
+        double lat = cluster.getPosition().latitude;
+        double lng = cluster.getPosition().longitude;
+        showToast("Memories at " +
+                locationUpdateUtil.getAddress(lat, lng));
+        return true;
+    }
+
     /**
      * Method used to generate a marker by given specific name and location
      *
@@ -312,22 +332,6 @@ public class GoogleMapActivity extends Activity implements
 //        return googleMap.addMarker(new MarkerOptions().position(
 //                new LatLng(latitude, longitude)));
 //    }
-
-    /**
-     * Method used to check whether now google play service is available
-     *
-     * @return true if current google play service is available, false if not
-     */
-    private boolean isValidGooglePlayService() {
-        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (status == ConnectionResult.SUCCESS) {
-            return true;
-        } else {
-            Log.e(getClass().getSimpleName(), "Google Play Service is not available.");
-            GooglePlayServicesUtil.getErrorDialog(status, this, 10).show();
-            return false;
-        }
-    }
 
 //    @Override
 //    public boolean onMarkerClick(Marker marker) {
@@ -435,23 +439,21 @@ public class GoogleMapActivity extends Activity implements
         }
     };
 
-    @Override
-    public boolean onClusterItemClick(ClusterItem clusterItem) {
-        String objectId = clusterItems.get(clusterItem);
-        if (null == objectId) {
+    /**
+     * Copied from official Document
+     * Method used to check whether now google play service is available
+     *
+     * @return true if current google play service is available, false if not
+     */
+    private boolean isValidGooglePlayService() {
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (status == ConnectionResult.SUCCESS) {
+            return true;
+        } else {
+            Log.e(getClass().getSimpleName(), "Google Play Service is not available.");
+            GooglePlayServicesUtil.getErrorDialog(status, this, 10).show();
             return false;
         }
-        getMemoryBriefInfo(objectId);
-        return true;
-    }
-
-    @Override
-    public boolean onClusterClick(Cluster cluster) {
-        double lat = cluster.getPosition().latitude;
-        double lng = cluster.getPosition().longitude;
-        showToast("Memories at " +
-                locationUpdateUtil.getAddress(lat, lng));
-        return true;
     }
 
     private void showToast(String msg) {

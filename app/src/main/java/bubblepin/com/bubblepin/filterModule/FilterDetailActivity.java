@@ -40,11 +40,9 @@ public class FilterDetailActivity extends ActionBarActivity
 
     private TextView textView;
     private SlideListView listView;
-
-    private SimpleAdapter adapter;
-
     private LinearLayout progressBarLayout;
 
+    private SimpleAdapter adapter;
     private List<Map<String, Object>> list = new ArrayList<>();
     private String categoryID;
 
@@ -223,29 +221,6 @@ public class FilterDetailActivity extends ActionBarActivity
         builderSingle.show();
     }
 
-    private void showToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_filter_detail, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -286,5 +261,28 @@ public class FilterDetailActivity extends ActionBarActivity
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_filter_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

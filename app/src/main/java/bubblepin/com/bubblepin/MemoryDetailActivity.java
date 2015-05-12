@@ -205,33 +205,6 @@ public class MemoryDetailActivity extends ActionBarActivity {
         Toast.makeText(this, info, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_memory_detail, menu);
-
-        MenuItem delete = menu.findItem(R.id.menu_memory_detail_delete);
-
-        if (ParseUtil.isCurrentLoginUser(memoryAuthorUserId)) {
-            delete.setVisible(true);
-        }
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.menu_memory_detail_delete:
-                deleteDialog();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     /**
      * show dialog to double check for the delete event
      */
@@ -266,5 +239,32 @@ public class MemoryDetailActivity extends ActionBarActivity {
 
     private void updateMap() {
         GoogleMapActivity.refreshUpdateMarkers();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_memory_detail, menu);
+
+        MenuItem delete = menu.findItem(R.id.menu_memory_detail_delete);
+
+        if (ParseUtil.isCurrentLoginUser(memoryAuthorUserId)) {
+            delete.setVisible(true);
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.menu_memory_detail_delete:
+                deleteDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

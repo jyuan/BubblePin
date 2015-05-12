@@ -67,8 +67,6 @@ public class LocationUpdateUtil implements GoogleApiClient.ConnectionCallbacks,
 
     @Override
     public void onConnected(Bundle bundle) {
-        // If the initial location was never previously requested, use
-        // FusedLocationApi.getLastLocation() to get it.
         if (location == null) {
             location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         }
@@ -158,6 +156,7 @@ public class LocationUpdateUtil implements GoogleApiClient.ConnectionCallbacks,
     }
 
     /**
+     * Reference from online
      * Return current human readable address based on current location.
      *
      * @return human readable address string

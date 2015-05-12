@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,18 @@ public class SignUpActivity extends Activity implements LoaderCallbacks<Cursor> 
 
         MyApplication.getInstance().addActivity(this);
 
-        initViewById();
+        setUpSignUpForm();
+    }
+
+    private void setUpSignUpForm() {
+        progressView = findViewById(R.id.signUp_progress);
+
+        nameText = (EditText) this.findViewById(R.id.name_signUpActivity);
+        emailText = (AutoCompleteTextView) this.findViewById(R.id.email_signUpActivity);
+        populateAutoComplete();
+
+        passwordText = (EditText) this.findViewById(R.id.password_signUpActivity);
+        signUpButton = (ImageView) this.findViewById(R.id.loginButton_signUpActivity);
 
         signUpButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -64,26 +74,10 @@ public class SignUpActivity extends Activity implements LoaderCallbacks<Cursor> 
         });
     }
 
-    private void initViewById() {
-        progressView = findViewById(R.id.signUp_progress);
-
-        nameText = (EditText) this.findViewById(R.id.name_signUpActivity);
-        emailText = (AutoCompleteTextView) this.findViewById(R.id.email_signUpActivity);
-        populateAutoComplete();
-
-        passwordText = (EditText) this.findViewById(R.id.password_signUpActivity);
-        signUpButton = (ImageView) this.findViewById(R.id.loginButton_signUpActivity);
-    }
-
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     public void attemptSignUp() {
         // Reset errors.
         nameText.setError(null);
@@ -208,8 +202,6 @@ public class SignUpActivity extends Activity implements LoaderCallbacks<Cursor> 
                         " = ?", new String[]{ContactsContract.CommonDataKinds.Email
                 .CONTENT_ITEM_TYPE},
 
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 

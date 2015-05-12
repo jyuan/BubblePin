@@ -35,6 +35,7 @@ public class AddContactActivity extends ActionBarActivity
         implements SwipeRefreshLayout.OnRefreshListener {
 
     private static boolean isInitial = true;
+    private static final String currentID = ParseUser.getCurrentUser().getObjectId();
 
     private ListView listView;
 
@@ -42,8 +43,6 @@ public class AddContactActivity extends ActionBarActivity
     private SwipeRefreshLayout swipeLayout;
 
     private List<Map<String, Object>> list = new ArrayList<>();
-
-    private static final String currentID = ParseUser.getCurrentUser().getObjectId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,6 @@ public class AddContactActivity extends ActionBarActivity
 
         progressLayout = (LinearLayout) findViewById(R.id.progressBar_layout);
         listView = (ListView) findViewById(R.id.add_contract_list);
-        listView.setTextFilterEnabled(true);
 
         isInitial = true;
         getUserDataFromParse();
@@ -77,28 +75,16 @@ public class AddContactActivity extends ActionBarActivity
         });
     }
 
+    @Override
+    public void onRefresh() {
+        getUserDataFromParse();
+    }
+
     /**
      * Shows the progress UI or not
      */
-    public void showProgress(final boolean show) {
+    private void showProgress(final boolean show) {
         progressLayout.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_contact, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     private void getUserDataFromParse() {
@@ -174,7 +160,19 @@ public class AddContactActivity extends ActionBarActivity
     }
 
     @Override
-    public void onRefresh() {
-        getUserDataFromParse();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_contact, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

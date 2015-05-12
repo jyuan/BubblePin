@@ -36,6 +36,7 @@ import com.parse.ParseUser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
@@ -45,7 +46,7 @@ import bubblepin.com.bubblepin.R;
 import bubblepin.com.bubblepin.util.ParseUtil;
 
 /**
- * Module from Metaio Android SDK
+ * Module from Metaio Android SDK smaple code
  * I focus on the data intersection
  */
 public class MetaioLocationActivity extends ARViewActivity {
@@ -56,9 +57,10 @@ public class MetaioLocationActivity extends ARViewActivity {
 
     private MyAnnotatedGeometriesGroupCallback annotatedGeometriesGroupCallback;
 
-    private List<MetaioMemory> memories = new ArrayList<>();
-
     private IRadar iRadar;
+
+    // I done all the code related to this variable
+    private List<MetaioMemory> memories = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,13 +118,13 @@ public class MetaioLocationActivity extends ARViewActivity {
      * Method used to initialize all LLACoordinates
      */
     private List<MemoryLocation> initMemoryLLACoordinate() throws ParseException {
-        List<MemoryLocation> res = new ArrayList<>();
+        List<MemoryLocation> res = new LinkedList<>();
         List<ParseObject> parseObjects = ParseUtil.getAllMemories();
 
         for (ParseObject parseObject : parseObjects) {
             String objectId = parseObject.getObjectId();
-            String address = parseObject.getString("address");
-            ParseGeoPoint geoPoint = parseObject.getParseGeoPoint("geoPoint");
+            String address = parseObject.getString(ParseUtil.MEMORY_ADDRESS);
+            ParseGeoPoint geoPoint = parseObject.getParseGeoPoint(ParseUtil.MEMORY_GEOPOINT);
             res.add(new MemoryLocation(geoPoint, objectId, address));
         }
         return res;
@@ -144,14 +146,12 @@ public class MetaioLocationActivity extends ARViewActivity {
         annotatedGeometriesGroupCallback = new MyAnnotatedGeometriesGroupCallback();
         annotatedGeometriesGroup.registerCallback(annotatedGeometriesGroupCallback);
 
-        // Clamp geometries' Z position to range [5000;200000] no matter how close or far they are
-        // away.
+        // Clamp geometries' Z position to range [5000;200000] no matter how close or far they are away.
         // This influences minimum and maximum scaling of the geometries (easier for development).
         metaioSDK.setLLAObjectRenderingLimits(200, 200);
 
         // Set render frustum accordingly
         metaioSDK.setRendererClippingPlaneLimits(10, 220000);
-
 
         List<MemoryLocation> memoryLocations = null;
         try {

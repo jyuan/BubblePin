@@ -3,6 +3,7 @@ package bubblepin.com.bubblepin.util;
 import android.location.Location;
 import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -37,9 +38,7 @@ public class ParseUtil {
 
     // User
     public static final String USER_EMAIL = "username";
-    public static final String USER_PASSWORD = "password";
     public static final String USER_NICKNAME = "nickname";
-    public static final String USER_CREATE_TIME = "createdAt";
     public static final String USER_PHOTO = "Photo";
     public static final String USER_COUNTRY = "Country";
     public static final String USER_CITY = "City";
@@ -72,6 +71,7 @@ public class ParseUtil {
     public static final String FILTER_CATEGORY_NAME = "Category";
     public static final String FILTER_USER_ID = "UserID";
     public static final String FILTER_CATEGORY_ID = "CategoryID";
+    public static final String FILTER_OWNER_ID = "OwnerID";
 
     /**
      * Method used to convert a Location object to ParseGeoPoint object
@@ -299,19 +299,6 @@ public class ParseUtil {
         return friendsID;
     }
 
-
-    public static Set<String> getUsersInCategory(String categoryID) throws ParseException {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(FILTER_DETAIL);
-        query.whereEqualTo(FILTER_CATEGORY_ID, categoryID);
-
-        Set<String> res = new HashSet<>();
-        List<ParseObject> parseObjects = query.find();
-        for (ParseObject parseObject : parseObjects) {
-            res.add(parseObject.getObjectId());
-        }
-        return res;
-    }
-
     /**
      * get all the categories by current login user
      *
@@ -454,9 +441,11 @@ public class ParseUtil {
      * @throws ParseException
      */
     public static void saveFriendIntoCategory(String categoryID, String userID) throws ParseException {
+        String currentUserID = ParseUser.getCurrentUser().getObjectId();
         ParseObject parseObject = new ParseObject(ParseUtil.FILTER_DETAIL);
         parseObject.put(FILTER_CATEGORY_ID, categoryID);
         parseObject.put(FILTER_USER_ID, userID);
+        parseObject.put(FILTER_OWNER_ID, currentUserID);
         parseObject.saveInBackground();
     }
 
@@ -621,20 +610,6 @@ public class ParseUtil {
     }
 
 //    Delete Module
-
-    /**
-     * Delete memory
-     *
-     * @param objectID memory unique ID
-     * @throws ParseException
-     */
-    public static void deleteMemory(String objectID) throws ParseException {
-        ParseQuery query = new ParseQuery(MEMORY);
-        query.whereEqualTo(OBJECT_ID, objectID);
-        ParseObject object = query.getFirst();
-        object.delete();
-    }
-
     /**
      * Delete the category
      *
@@ -642,6 +617,16 @@ public class ParseUtil {
      * @throws ParseException
      */
     public static void deleteCategory(String objectID) throws ParseException {
+        ParseQuery<ParseObject> queryDetail = ParseQuery.getQuery(FILTER_DETAIL);
+        queryDetail.whereEqualTo(FILTER_CATEGORY_ID, objectID);
+        queryDetail.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (ParseObject parseObject : list) {
+                    parseObject.deleteInBackground();
+                }
+            }
+        });
         ParseQuery query = ParseQuery.getQuery(FILTER);
         query.whereEqualTo(OBJECT_ID, objectID);
         ParseObject object = query.getFirst();
@@ -664,6 +649,19 @@ public class ParseUtil {
      * @throws ParseException
      */
     public static void deleteFriend(String currentID, String userID) throws ParseException {
+        // delete in filter
+        ParseQuery<ParseObject> queryFilter = ParseQuery.getQuery(FILTER_DETAIL);
+        queryFilter.whereEqualTo(FILTER_OWNER_ID, currentID);
+        queryFilter.whereEqualTo(FILTER_USER_ID, userID);
+        queryFilter.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (ParseObject parseObject : list) {
+                    parseObject.deleteInBackground();
+                }
+            }
+        });
+
         ParseQuery<ParseObject> query = ParseUtil.isFriendQuery(currentID, userID);
         ParseObject parseObject = query.getFirst();
         parseObject.deleteInBackground();

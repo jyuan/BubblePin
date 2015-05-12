@@ -54,20 +54,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
         MyApplication.getInstance().addActivity(this);
 
-        // Set up the login form.
-        emailText = (AutoCompleteTextView) findViewById(R.id.email_loginActivity);
-        populateAutoComplete();
-
-        passwordText = (EditText) findViewById(R.id.password_loginActivity);
-
-        ImageView loginButton = (ImageView) findViewById(R.id.login_button);
-        ImageView signUpButton = (ImageView) findViewById(R.id.signup_button);
-        TextView forgetPassword = (TextView) findViewById(R.id.forget_password);
-
-        loginButton.setOnClickListener(this);
-        signUpButton.setOnClickListener(this);
-        forgetPassword.setOnClickListener(this);
-        progressView = findViewById(R.id.login_progress);
+        setUpLoginForm();
     }
 
     @Override
@@ -83,6 +70,22 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
                 startActivity(new Intent(this, ForgetPasswordActivity.class));
                 break;
         }
+    }
+
+    private void setUpLoginForm() {
+        emailText = (AutoCompleteTextView) findViewById(R.id.email_loginActivity);
+        populateAutoComplete();
+
+        passwordText = (EditText) findViewById(R.id.password_loginActivity);
+        progressView = findViewById(R.id.login_progress);
+
+        ImageView loginButton = (ImageView) findViewById(R.id.login_button);
+        ImageView signUpButton = (ImageView) findViewById(R.id.signup_button);
+        TextView forgetPassword = (TextView) findViewById(R.id.forget_password);
+
+        loginButton.setOnClickListener(this);
+        signUpButton.setOnClickListener(this);
+        forgetPassword.setOnClickListener(this);
     }
 
     private void populateAutoComplete() {
@@ -129,8 +132,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
             try {
                 loginToAccount(email, password);

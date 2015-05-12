@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
@@ -60,6 +59,10 @@ public class ContactActivity extends ActionBarActivity
     private int countFriend = 0;
     private final String currentUserID = ParseUser.getCurrentUser().getObjectId();
 
+    public static void refreshUpdateFriendList() {
+        isRefresh = true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +76,6 @@ public class ContactActivity extends ActionBarActivity
         progressLayout = (LinearLayout) findViewById(R.id.progressBar_layout);
         totalFriend = (TextView) findViewById(R.id.contact_total);
         listView = (SlideListView) findViewById(R.id.contact_list);
-
-        listView.setTextFilterEnabled(true);
         listView.setRemoveListener(this);
 
         // set up swipeLayout
@@ -96,13 +97,6 @@ public class ContactActivity extends ActionBarActivity
         });
     }
 
-    /**
-     * Shows the progress UI or not
-     */
-    private void showProgress(final boolean show) {
-        progressLayout.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -115,6 +109,13 @@ public class ContactActivity extends ActionBarActivity
 //            listView.onRestoreInstanceState(parcelable);
 //        }
 //        parcelable = null;
+    }
+
+    /**
+     * Shows the progress UI or not
+     */
+    private void showProgress(final boolean show) {
+        progressLayout.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void getFriendDataFromParse() {
@@ -132,7 +133,7 @@ public class ContactActivity extends ActionBarActivity
                 if (null == e) {
                     contactNumber = results.size();
                     if (contactNumber == 0) {
-                        changetoNoFriendView();
+                        changeToNoFriendView();
                     } else {
                         countFriend = 0;
                         for (ParseObject object : results) {
@@ -152,13 +153,6 @@ public class ContactActivity extends ActionBarActivity
                 }
             }
         });
-    }
-
-    private void changetoNoFriendView() {
-        totalFriend.setText(getResources().getString(R.string.contact_no_friends));
-        showProgress(false);
-        isInitial = false;
-        swipeLayout.setRefreshing(false);
     }
 
     private void getUserInfo(String userID) {
@@ -205,25 +199,11 @@ public class ContactActivity extends ActionBarActivity
         listView.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_contact, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_contact_add:
-                startActivity(new Intent(ContactActivity.this, AddContactActivity.class));
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    private void changeToNoFriendView() {
+        totalFriend.setText(getResources().getString(R.string.contact_no_friends));
+        showProgress(false);
+        isInitial = false;
+        swipeLayout.setRefreshing(false);
     }
 
     @Override
@@ -245,7 +225,7 @@ public class ContactActivity extends ActionBarActivity
                             ParseUtil.deleteFriend(currentUserID, userID);
                             list.remove(list.get(position));
                             if (list.size() == 0) {
-                                changetoNoFriendView();
+                                changeToNoFriendView();
                             } else {
                                 contactNumber--;
                                 showListView();
@@ -267,8 +247,24 @@ public class ContactActivity extends ActionBarActivity
         alertDialog.show();
     }
 
-    public static void refreshUpdateFriendList() {
-        isRefresh = true;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_contact, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_contact_add:
+                startActivity(new Intent(ContactActivity.this, AddContactActivity.class));
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 //    @Override

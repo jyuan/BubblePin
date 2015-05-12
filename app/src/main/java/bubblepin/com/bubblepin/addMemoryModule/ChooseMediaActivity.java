@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -79,7 +78,7 @@ public class ChooseMediaActivity extends Activity implements View.OnClickListene
 //                addRecommend();
 //                break;
             default:
-                showToast("Coming Soon");
+                showToast(getString(R.string.coming_soon));
         }
     }
 
@@ -87,6 +86,8 @@ public class ChooseMediaActivity extends Activity implements View.OnClickListene
      * start a new intent to perform and request image capture
      * and also create a new file to store current captured image
      * file on SD card
+     *
+     * Reference from official document
      */
     private void addCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -97,6 +98,8 @@ public class ChooseMediaActivity extends Activity implements View.OnClickListene
 
     /**
      * choose image from gallery
+     *
+     * Reference from official document
      */
     private void addPicture() {
         Intent intent = new Intent();
