@@ -2,10 +2,7 @@
     <string name="app_name">BubblePin</string>
 
     <!--TODO: remember to delete it when release the APP-->
-    <!--<string name="test_email">test@bubblepin.com</string>-->
-    <!--<string name="test_password">yuanjie</string>-->
-
-    <string name="test_email">bubblepin.dev@gmail.com</string>
+    <string name="test_email">demo@bubblepin.com</string>
     <string name="test_password">yuanjie2015</string>
 
     <!-- Activity -->

@@ -140,6 +140,7 @@ public class ProfileActivity extends ActionBarActivity implements OnMapReadyCall
     public void onStop() {
         super.onStop();
         googleApiClient.disconnect();
+        googleMap.clear();
     }
 
     @Override

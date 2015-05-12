@@ -44,7 +44,7 @@ import bubblepin.com.bubblepin.contactModule.ContactActivity;
 import bubblepin.com.bubblepin.filterModule.FilterActivity;
 import bubblepin.com.bubblepin.googleMapCluster.BubblePinClusterItem;
 import bubblepin.com.bubblepin.loginModule.SignUpActivity;
-import bubblepin.com.bubblepin.metaioSDKLocationModule.MetaioSDKLocationBasedARModule;
+import bubblepin.com.bubblepin.metaioSDKLocationModule.MetaioLocationActivity;
 import bubblepin.com.bubblepin.profileModule.ProfileActivity;
 import bubblepin.com.bubblepin.util.LocationUpdateUtil;
 import bubblepin.com.bubblepin.util.ParseUtil;
@@ -169,7 +169,7 @@ public class GoogleMapActivity extends Activity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.switch_button:
-                startActivity(new Intent(this, MetaioSDKLocationBasedARModule.class));
+                startActivity(new Intent(this, MetaioLocationActivity.class));
                 break;
             case R.id.add_memory:
                 if (parseGeoPoint != null) {

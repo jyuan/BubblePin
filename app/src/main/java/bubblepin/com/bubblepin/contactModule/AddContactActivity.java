@@ -93,8 +93,6 @@ public class AddContactActivity extends ActionBarActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_contact_search:
-                return true;
             case android.R.id.home:
                 finish();
                 return true;

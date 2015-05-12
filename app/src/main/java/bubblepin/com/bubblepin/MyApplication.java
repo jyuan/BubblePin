@@ -27,8 +27,6 @@ public class MyApplication extends Application {
         if (null == instance) {
             instance = new MyApplication();
         }
-
-
         return instance;
     }
 

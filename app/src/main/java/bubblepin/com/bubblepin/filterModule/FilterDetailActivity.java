@@ -209,6 +209,7 @@ public class FilterDetailActivity extends ActionBarActivity
                             if (ParseUtil.isFriendExistInCategory(categoryID, userID)) {
                                 list.add(contactList.get(which));
                                 ParseUtil.saveFriendIntoCategory(categoryID, userID);
+                                changeView(true);
                                 showListView();
                                 adapter.notifyDataSetChanged();
                             } else {
@@ -265,7 +266,11 @@ public class FilterDetailActivity extends ActionBarActivity
                             String userID = String.valueOf(list.get(position).get(ParseUtil.OBJECT_ID));
                             ParseUtil.deleteFriendInCategory(categoryID, userID);
                             list.remove(list.get(position));
-                            showListView();
+                            if (list.size() == 0) {
+                                changeView(false);
+                            } else {
+                                showListView();
+                            }
                             adapter.notifyDataSetChanged();
                         } catch (ParseException e) {
                             Log.e(getClass().getSimpleName(), "delete this user error: " + e.getMessage());

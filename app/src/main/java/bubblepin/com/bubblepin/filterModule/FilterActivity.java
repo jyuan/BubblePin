@@ -20,6 +20,7 @@ import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class FilterActivity extends ActionBarActivity implements SlideListView.R
     private TextView textView;
 
     private FilterAdapter adapter;
-    private List<Map<String, Object>> list = new ArrayList<>();
+    private List<Map<String, Object>> list = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +103,17 @@ public class FilterActivity extends ActionBarActivity implements SlideListView.R
                         try {
                             if (ParseUtil.isDuplicateCategory(name)) {
                                 dialog.dismiss();
+                                boolean noData = false;
+                                if (list.size() == 0) {
+                                    noData = true;
+                                }
                                 addItemIntoListView(ParseUtil.saveCategory(name));
-                                adapter.notifyDataSetChanged();
-                                showToast(getString(R.string.create) + " " +  name + " " +
+                                if (noData) {
+                                    listDataInitial();
+                                } else {
+                                    adapter.notifyDataSetChanged();
+                                }
+                                showToast(getString(R.string.create) + " " + name + " " +
                                         getString(R.string.filter_create_category_success));
                             } else {
                                 showToast(getString(R.string.filter_duplicate_category_name));
@@ -200,6 +209,9 @@ public class FilterActivity extends ActionBarActivity implements SlideListView.R
                             ParseUtil.deleteCategory(String.valueOf(list.get(position).get(FilterAdapter.CATEGORY_ID)));
                             list.remove(list.get(position));
                             adapter.notifyDataSetChanged();
+                            if (list.size() == 0) {
+                                changeView(false);
+                            }
                         } catch (ParseException e) {
                             Log.e(getClass().getSimpleName(), "delete the category error: " + e.getMessage());
                         }
